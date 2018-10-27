@@ -5,62 +5,11 @@
   <title>Hello World</title>
 </head>
   <script src="assets/js/pixi.min.js"></script>
-  <script src="assets/js/keyboard.js"></script>
+  <script src="assets/js/response.js"></script>
+  <script src="assets/js/animation.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/UI.js"></script>
 <body>
-  <script type="text/javascript">
-  var type = "WebGL";
-
-  if (!PIXI.utils.isWebGLSupported()) {
-      type = "canvas";
-  }
-
-  PIXI.utils.sayHello(type);
-
-  var renderer = PIXI.autoDetectRenderer(512, 512);
-  document.body.appendChild(renderer.view);  
-  var stage = new PIXI.Container();
-  PIXI.loader
-    .add("assets/img/treasureHunter.json")
-    .load(setup);
-
-  let keyObject = keyboard(asciiKeyCodeNumber);
-  keyObject.press = () => {
-    //key object pressed
-  };
-  keyObject.release = () => {
-    //key object released
-  };
-  
-  function setup() {
-      gameScene = new PIXI.Container();
-      stage.addChild(gameScene);
-
-      // 获取所有加载的素材
-      id = PIXI.loader.resources["assets/img/treasureHunter.json"].textures;
-      // 获取地牢素材并创建对应的 sprite
-      dungeon = new PIXI.Sprite(id["dungeon.png"]);
-      // 添加到场景中
-      gameScene.addChild(dungeon);
-      // 添加门
-      door = new PIXI.Sprite(id["door.png"]);
-      door.position.set(32, 0);
-      gameScene.addChild(door);
-      // 添加探险家
-      explorer = new PIXI.Sprite(id["explorer.png"]);
-      explorer.x = 68;
-      explorer.y = gameScene.height / 2 - explorer.height / 2;
-      explorer.vx = 0;
-      explorer.vy = 0;
-      gameScene.addChild(explorer);
-      // 添加宝箱
-      treasure = new PIXI.Sprite(id["treasure.png"]);
-      treasure.x = gameScene.width - treasure.width - 48;
-      treasure.y = gameScene.height / 2 - treasure.height / 2;
-      gameScene.addChild(treasure);
-      // 渲染舞台，暂时为了查看效果，后面会把这个移到其他的地方
-      renderer.render(stage);
-  }
-  setup();
-  </script>
+    <script src="assets/js/game_main.js"></script>
 </body>
 </html>
