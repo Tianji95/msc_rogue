@@ -7,17 +7,24 @@ var KEY_UP    = 38;
 var KEY_RIGHT = 39;
 var KEY_DOWN  = 40;
 
+var DIRECTION_LEFT  = 0;
+var DIRECTION_RIGHT = 1;
+var DIRECTION_UP    = 2;
+var DIRECTION_DOWN  = 3;
+
 var GAME_STATE   = GameStart;
 var WAIT_TIME    = 0;
 var SCENE        = "title";
 var SCENE_STATE  = 0;
 var Chara_Rachel = 0;
 var TYPE         = "WebGL";
-var HEIGHT       = window.screen.availHeight;
-var WIDTH        = window.screen.availWidth;
+var HEIGHT       = document.documentElement.clientHeight;
+var WIDTH        = document.documentElement.clientWidth;
+var MapXOffset   = 0; // 用来记录滚动的X方向offset，单位为格子，不是像素
+var MapYOffset   = 0;// 用来记录滚动的Y方向offset，单位为格子，不是像素
 var IMG_WIDTH    = 64;
 var IMG_HEIGHT   = 64;
-
+var mapProducer  = new MapProducer(25, 35, 50, 1, 1, 5);
 
 if (!PIXI.utils.isWebGLSupported()) {
     TYPE = "canvas";
@@ -58,20 +65,24 @@ function Setup() {
   STAGE.addChild(GAME_START_SCENE);
   STAGE.addChild(GAME_OVER_SCENE);
 
-  for(var w = 0; w < WIDTH / IMG_WIDTH; w++){
-    for(var h = 0; h < HEIGHT / IMG_HEIGHT; h++){
-      var maptile = new PIXI.Sprite(PIXI.loader.resources["assets/img/Tile_Ground.png"].texture);
-      maptile.x = w * IMG_WIDTH;
-      maptile.y = h * IMG_HEIGHT;
-      GAME_SCENE.addChild(maptile);
-    }
+  updateMap();
+
+  var texture = PIXI.loader.resources["assets/img/Chara_Rachel.png"].texture;
+  // TODO: 动画的播放控制
+  var Chara_Rachel_Animation = [];
+  for(let i = 0; i < 3; i++){
+    let rectangle = new PIXI.Rectangle(0, 0, 52, 72);
+    texture.frame = rectangle;
   }
 
-  Chara_Rachel = new PIXI.Sprite(PIXI.loader.resources["assets/img/Chara_Rachel.png"].texture);
+  Chara_Rachel = new PIXI.extras.AnimatedSprite.fromImages(Chara_Rachel_Animation);
   Chara_Rachel.x = 0;
   Chara_Rachel.y = 0;
   Chara_Rachel.vx = 0;
   Chara_Rachel.vy = 0;
+  Chara_Rachel.frame = 0;
+  Chara_Rachel.direction = DIRECTION_LEFT; 
+
   GAME_SCENE.addChild(Chara_Rachel);
   RENDERER.render(STAGE);
 
@@ -164,4 +175,20 @@ function GameOver() {
 function UpdateRender()
 {
     RENDERER.render(STAGE);
+}
+
+function updateMap(){
+
+    mapProducer.produceMap();
+    var mp = mapProducer.map;
+    // TODO: 还没做地图滚动和阴影
+    for(var w = 0; w < WIDTH / IMG_WIDTH; w++){
+        for(var h = 0; h < HEIGHT / IMG_HEIGHT; h++){
+          var maptile = new PIXI.Sprite(PIXI.loader.resources["assets/img/Tile_Ground.png"].texture);
+          maptile.x = w * IMG_WIDTH;
+          maptile.y = h * IMG_HEIGHT;
+          GAME_SCENE.addChild(maptile);
+        }
+    }
+
 }

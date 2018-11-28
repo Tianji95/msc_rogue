@@ -45,6 +45,7 @@ function KeyboardListener(){
   left.press = function () {
     Chara_Rachel.vx = -5;
     Chara_Rachel.vy = 0;
+    Chara_Rachel.direction = DIRECTION_LEFT;
   };
   left.release = function () {
     if (!right.isDown && Chara_Rachel.vy === 0) {
@@ -55,6 +56,7 @@ function KeyboardListener(){
   up.press = function () {
     Chara_Rachel.vy = -5;
     Chara_Rachel.vx = 0;
+    Chara_Rachel.direction = DIRECTION_UP;
   };
   up.release = function () {
   if (!down.isDown && Chara_Rachel.vx === 0) {
@@ -65,6 +67,7 @@ function KeyboardListener(){
   right.press = function () {
     Chara_Rachel.vx = 5;
     Chara_Rachel.vy = 0;
+    Chara_Rachel.direction = DIRECTION_RIGHT;
   };
   right.release = function () {
   if (!left.isDown && Chara_Rachel.vy === 0) {
@@ -75,6 +78,7 @@ function KeyboardListener(){
   down.press = function () {
     Chara_Rachel.vy = 5;
     Chara_Rachel.vx = 0;
+    Chara_Rachel.direction = DIRECTION_DOWN;
   };
   down.release = function () {
     if (!up.isDown && Chara_Rachel.vx === 0) {
@@ -84,6 +88,7 @@ function KeyboardListener(){
 }
 
 function onStartButtonClick(){
+
   GAME_STATE = GamePlay;
 }
 function onGameOverButtonClick(){
